@@ -1,30 +1,33 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // URL of the CSV file on the GitHub repo
     fetch("https://raw.githubusercontent.com/hicks53/wehoop-wbb-data/main/play_by_play_2005.csv")
         .then(response => response.text())
         .then(data => {
-            console.log("CSV Data Loaded: ", data); // Log the raw CSV data for debugging
-
             const rows = data.split("\n").slice(1); // Skip header row
             const tableBody = document.querySelector("#statsTable tbody");
-
-            if (rows.length === 0) {
-                console.error("No data available in the CSV file.");
-                return;
-            }
 
             rows.forEach(row => {
                 const columns = row.split(",");
                 if (columns.length > 1) { // Ignore empty rows
                     const tr = document.createElement("tr");
 
-                    // Log the columns to make sure they're correctly split
-                    console.log("Row Data: ", columns);
+                    // Extract and map the necessary columns (adjust based on your needs)
+                    const id = columns[0];
+                    const sequenceNumber = columns[1];
+                    const type = columns[3];
+                    const text = columns[4];
+                    const awayScore = columns[6];
+                    const homeScore = columns[7];
+                    const period = columns[8];
+                    const clock = columns[9];
+                    const scoringPlay = columns[10];
+                    const scoreValue = columns[11];
+                    const gameDate = columns[48]; // Adjust this to correct column index if needed
 
-                    // Create table cells for each column
-                    columns.forEach(col => {
+                    // Create table cells for the extracted columns
+                    const dataCells = [id, sequenceNumber, type, text, awayScore, homeScore, period, clock, scoringPlay, scoreValue, gameDate];
+                    dataCells.forEach(cellData => {
                         const td = document.createElement("td");
-                        td.textContent = col.trim();  // Trim to remove extra spaces
+                        td.textContent = cellData.trim();  // Trim to remove any extra spaces
                         tr.appendChild(td);
                     });
 
